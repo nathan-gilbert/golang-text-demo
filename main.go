@@ -1,4 +1,4 @@
-package textulizer
+package main
 
 import (
 	"encoding/json"
