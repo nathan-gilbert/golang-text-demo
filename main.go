@@ -34,6 +34,20 @@ func rot13(s string) string {
 	return result.String()
 }
 
+func spongebob(s string) string {
+	var result strings.Builder
+	upper := true
+	for _, r := range s {
+		if upper {
+			result.WriteRune(r)
+		} else {
+			result.WriteRune(r + 32)
+		}
+		upper = !upper
+	}
+	return result.String()
+}
+
 // palindromeHandler checks if the provided string is a palindrome.
 func palindromeHandler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
@@ -45,7 +59,10 @@ func palindromeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(result)
+	err := json.NewEncoder(w).Encode(result)
+	if err != nil {
+		return
+	}
 }
 
 // rot13Handler applies ROT13 encoding to the provided string.
@@ -59,14 +76,36 @@ func rot13Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(result)
+	err := json.NewEncoder(w).Encode(result)
+	if err != nil {
+		return
+	}
 }
 
 // spongebobHandler applies spongebob encoding to the provided string.
+func spongebobHandler(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query()
+	input := query.Get("input")
+
+	result := map[string]string{
+		"input":     input,
+		"spongebob": spongebob(input),
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err := json.NewEncoder(w).Encode(result)
+	if err != nil {
+		return
+	}
+}
 
 func main() {
 	http.HandleFunc("/is-palindrome", palindromeHandler)
 	http.HandleFunc("/rot13", rot13Handler)
+	http.HandleFunc("/spongebob", spongebobHandler)
 
-	http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		return
+	}
 }
