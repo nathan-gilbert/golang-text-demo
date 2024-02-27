@@ -2,11 +2,11 @@ package main
 
 import (
 	"encoding/json"
+	"math/rand"
 	"net/http"
 	"strings"
 )
 
-// isPalindrome checks if a string is a palindrome.
 func isPalindrome(s string) bool {
 	s = strings.ToLower(strings.TrimSpace(s))
 	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
@@ -17,7 +17,6 @@ func isPalindrome(s string) bool {
 	return true
 }
 
-// rot13 applies ROT13 encoding to a string.
 func rot13(s string) string {
 	var result strings.Builder
 	result.Grow(len(s))
@@ -34,14 +33,19 @@ func rot13(s string) string {
 	return result.String()
 }
 
+// not really random or performant, but good enough for this purpose
+func randomBool() bool {
+	return rand.Intn(2) == 1
+}
+
 func spongebob(s string) string {
 	var result strings.Builder
-	upper := true
+	upper := randomBool()
 	for _, r := range s {
 		if upper {
-			result.WriteRune(r)
+			result.WriteString(strings.ToUpper(string(r)))
 		} else {
-			result.WriteRune(r + 32)
+			result.WriteString(strings.ToLower(string(r)))
 		}
 		upper = !upper
 	}
