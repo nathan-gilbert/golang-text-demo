@@ -15,6 +15,8 @@
 
 Install the [heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
 
+Create the application in your Heroku account.
+
 Then, set the heroku remote git repository: `heroku git:remote -a <heroku-app-name>`. This only needs to be done once.
 
 Then push the code to heroku: `git push heroku main`
