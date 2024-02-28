@@ -72,8 +72,8 @@ func palindromeHandler(w http.ResponseWriter, r *http.Request) {
 	t, err := extractPayload(r)
 
 	result := map[string]interface{}{
-		"input":      *t.Input,
-		"palindrome": isPalindrome(*t.Input),
+		"original":     *t.Input,
+		"isPalindrome": isPalindrome(*t.Input),
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -88,8 +88,8 @@ func rot13Handler(w http.ResponseWriter, r *http.Request) {
 	t, err := extractPayload(r)
 
 	result := map[string]string{
-		"input": *t.Input,
-		"rot13": rot13(*t.Input),
+		"original": *t.Input,
+		"rot13":    rot13(*t.Input),
 	}
 
 	w.Header().Set("Content-Type", "application/json")
