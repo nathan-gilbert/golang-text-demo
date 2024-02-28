@@ -52,18 +52,31 @@ func spongebob(s string) string {
 	return result.String()
 }
 
+type requestPayload struct {
+	Input *string
+}
+
+func extractPayload(r *http.Request) (requestPayload, error) {
+	decoder := json.NewDecoder(r.Body)
+	var t requestPayload
+	err := decoder.Decode(&t)
+	if err != nil {
+		panic(err)
+	}
+	return t, err
+}
+
 // palindromeHandler checks if the provided string is a palindrome.
 func palindromeHandler(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
-	input := query.Get("input")
+	t, err := extractPayload(r)
 
 	result := map[string]interface{}{
-		"input":      input,
-		"palindrome": isPalindrome(input),
+		"input":      *t.Input,
+		"palindrome": isPalindrome(*t.Input),
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(result)
+	err = json.NewEncoder(w).Encode(result)
 	if err != nil {
 		return
 	}
@@ -71,16 +84,15 @@ func palindromeHandler(w http.ResponseWriter, r *http.Request) {
 
 // rot13Handler applies ROT13 encoding to the provided string.
 func rot13Handler(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
-	input := query.Get("input")
+	t, err := extractPayload(r)
 
 	result := map[string]string{
-		"input": input,
-		"rot13": rot13(input),
+		"input": *t.Input,
+		"rot13": rot13(*t.Input),
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(result)
+	err = json.NewEncoder(w).Encode(result)
 	if err != nil {
 		return
 	}
@@ -88,12 +100,24 @@ func rot13Handler(w http.ResponseWriter, r *http.Request) {
 
 // spongebobHandler applies spongebob encoding to the provided string.
 func spongebobHandler(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
-	input := query.Get("input")
+	t, err := extractPayload(r)
 
 	result := map[string]string{
-		"input":     input,
-		"spongebob": spongebob(input),
+		"original":  *t.Input,
+		"spongebob": spongebob(*t.Input),
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(result)
+	if err != nil {
+		return
+	}
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	result := map[string]interface{}{
+		"status":  http.StatusOK,
+		"message": "Service is healthy",
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -107,6 +131,7 @@ func main() {
 	http.HandleFunc("/is-palindrome", palindromeHandler)
 	http.HandleFunc("/rot13", rot13Handler)
 	http.HandleFunc("/spongebob", spongebobHandler)
+	http.HandleFunc("/health", healthHandler)
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
