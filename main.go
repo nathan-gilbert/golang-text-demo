@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"math/rand"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -133,7 +134,11 @@ func main() {
 	http.HandleFunc("/spongebob", spongebobHandler)
 	http.HandleFunc("/health", healthHandler)
 
-	err := http.ListenAndServe(":8080", nil)
+	appPort := ":" + os.Getenv("PORT")
+	if appPort == ":" {
+		appPort = ":8080"
+	}
+	err := http.ListenAndServe(appPort, nil)
 	if err != nil {
 		return
 	}
