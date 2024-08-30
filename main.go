@@ -133,9 +133,10 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	newRelicKey := os.Getenv("NEW_RELIC_APP_KEY")
 	app, err := newrelic.NewApplication(
 		newrelic.ConfigAppName("golang-text-demo"),
-		newrelic.ConfigLicense("aba7fb826b38ad9282281ddd470f6676FFFFNRAL"),
+		newrelic.ConfigLicense(newRelicKey),
 		newrelic.ConfigAppLogForwardingEnabled(true),
 	)
 
