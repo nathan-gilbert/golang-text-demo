@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	"math/rand"
 	"net/http"
 	"os"
@@ -9,6 +10,7 @@ import (
 )
 
 import _ "github.com/heroku/x/hmetrics/onload"
+import _ "github.com/newrelic/go-agent/v3/newrelic"
 
 func isPalindrome(s string) bool {
 	s = strings.ToLower(strings.TrimSpace(s))
@@ -131,9 +133,16 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	app, err := newrelic.NewApplication(
+		newrelic.ConfigAppName("golang-text-demo"),
+		newrelic.ConfigLicense("aba7fb826b38ad9282281ddd470f6676FFFFNRAL"),
+		newrelic.ConfigAppLogForwardingEnabled(true),
+	)
+
 	http.HandleFunc("/is-palindrome", palindromeHandler)
 	http.HandleFunc("/rot13", rot13Handler)
-	http.HandleFunc("/spongebob", spongebobHandler)
+	//http.HandleFunc("/spongebob", spongebobHandler)
+	http.HandleFunc(newrelic.WrapHandleFunc(app, "/spongebob", spongebobHandler))
 	http.HandleFunc("/health", healthHandler)
 
 	appPort := ":" + os.Getenv("PORT")

@@ -2,4 +2,7 @@ module golang-text-demo
 
 go 1.22
 
-require github.com/heroku/x v0.2.5 // indirect
+require (
+	github.com/heroku/x v0.2.5 // indirect
+	github.com/newrelic/go-agent/v3 v3.34.0 // indirect
+)

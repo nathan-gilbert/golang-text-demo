@@ -1,2 +1,4 @@
 github.com/heroku/x v0.2.5 h1:/8hLQGnAlXhR50dx1NAX4294xk/r7unjxXyudSdKcRg=
 github.com/heroku/x v0.2.5/go.mod h1:7GFrTnaS+s/yaYYDeMLUZAX1iqbIBBtxhF7gecmdwic=
+github.com/newrelic/go-agent/v3 v3.34.0 h1:jhtX+YUrAh2ddgPGIixMYq4+nCBrEN4ETGyi2h/zWJw=
+github.com/newrelic/go-agent/v3 v3.34.0/go.mod h1:VNsi+XA7YsgF4fHES8l/U6OhAHhU3IdLDFkB/wpevvA=
