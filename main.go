@@ -149,7 +149,8 @@ func main() {
 	if appPort == ":" {
 		appPort = ":8080"
 	}
-	err := http.ListenAndServe(appPort, nil)
+
+	err = http.ListenAndServe(appPort, nil)
 	if err != nil {
 		return
 	}
