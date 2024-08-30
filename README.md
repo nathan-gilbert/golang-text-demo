@@ -7,9 +7,9 @@
 ## Interacting with the service
 
 - `curl http://localhost:8080/health`
-- `curl -X POST -d '{"input: "hello, world!"}' http://localhost:8080/spongebob`
-- `curl -X POST -d '{"input: "wow"}' http://localhost:8080/is-palindrome`
-- `curl -X POST -d '{"input: "this is a secret"}' http://localhost:8080/rot13`
+- `curl -X POST -d '{"input": "hello, world!"}' http://localhost:8080/spongebob`
+- `curl -X POST -d '{"input": "wow"}' http://localhost:8080/is-palindrome`
+- `curl -X POST -d '{"input": "this is a secret"}' http://localhost:8080/rot13`
     
 ## Deploying to Heroku
 
